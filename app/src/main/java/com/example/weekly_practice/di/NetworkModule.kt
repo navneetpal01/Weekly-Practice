@@ -17,15 +17,8 @@ object NetworkModule{
 
     @Provides
     @Singleton
-    fun providesDataSyncRepository(application: Application) : DataSyncRepository{
+    fun providesDataSyncRepository(application : Application) : DataSyncRepository{
         return DataSyncRepository(application)
     }
-
-
-
-
-
-
-
 
 }
