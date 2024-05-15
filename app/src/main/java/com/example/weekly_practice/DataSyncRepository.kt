@@ -5,13 +5,13 @@ import android.util.Log
 import kotlinx.coroutines.delay
 
 
-class DataSyncRepository(context : Context){
+class DataSyncRepository(context: Context) {
 
 
-    suspend fun syncData(){
-        delay(2000)
-        Log.d("retrofit", "Data sync successfully values got updated :-")
-        Exception()
+    suspend fun syncData() {
+        delay(1500)
+        throw Exception()
+        Log.d("retrofit", "Data synced successfully Hurrayy!")
     }
 
 
