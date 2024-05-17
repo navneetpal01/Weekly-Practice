@@ -1,7 +1,6 @@
-package com.example.weekly_practice
+package com.example.weekly_practice.presentation
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weekly_practice.data.local.Note
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class NotesViewModel @Inject constructor(
     private val notesDatabase: NotesDatabase
 ) : ViewModel() {
     private val isOrderByDateAdded = MutableStateFlow(true)
