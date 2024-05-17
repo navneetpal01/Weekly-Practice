@@ -8,28 +8,23 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface NotesDao{
+interface NotesDao {
 
 
     @Upsert
-    fun upsertNote(note : Note)
+    suspend fun upsertNote(note: Note)
 
 
     @Delete
-    fun deleteNote(note : Note)
+    suspend fun deleteNote(note: Note)
 
 
     @Query("SELECT * FROM NOTE ORDER BY dateAdded")
-    fun getNotes() : Flow<List<Note>>
+    fun getNotes(): Flow<List<Note>>
 
 
     @Query("SELECT * FROM NOTE ORDER BY description ASC")
-    fun getNotesOrderByTittle() : Flow<List<Note>>
-
-
-
-
-
+    fun getNotesOrderByTittle(): Flow<List<Note>>
 
 
 }
