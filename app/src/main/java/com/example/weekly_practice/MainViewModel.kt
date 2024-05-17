@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weekly_practice.data.local.NotesDatabase
 import com.example.weekly_practice.presentation.NoteState
+import com.example.weekly_practice.presentation.NotesEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,8 +35,19 @@ class MainViewModel @Inject constructor(
         state.copy(
             notes = notes
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),NoteState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), NoteState())
 
+    fun onEvent(event : NotesEvent){
+        when(event){
+            is NotesEvent.DeleteNote -> {
 
+            }
+            is NotesEvent.SaveNote -> {
 
+            }
+            NotesEvent.ShortNotes -> {
+
+            }
+        }
+    }
 }
