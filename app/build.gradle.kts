@@ -1,9 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("plugin.serialization") version "1.9.23"
-    alias(libs.plugins.daggerHiltAndroid)
-    id("kotlin-kapt")
 }
 
 android {
@@ -71,25 +68,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-
-    // Dagger Hilt
-
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
-
-    // Room
-    val roomVersion = "2.6.0"
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-
-    // Extended Icons
-    implementation("androidx.compose.material:material-icons-extended:1.5.4")
-
-
-    //Navigation
-
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 
 }
