@@ -29,7 +29,7 @@ class CounterNotification(
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Counter")
-            .setContentText("Counter value")
+            .setContentText(Counter.counterValue.toString())
             .setOngoing(true)
             .setStyle(NotificationCompat.BigTextStyle())
             .setContentIntent(notificationPendingIntent)
@@ -46,7 +46,7 @@ class CounterNotification(
                 R.drawable.ic_launcher_foreground,
                 "Stop",
                 getPendingIntent(
-                    CounterActions.START,
+                    CounterActions.STOP,
                     flag,
                     3
                 )

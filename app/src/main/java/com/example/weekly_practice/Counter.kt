@@ -17,6 +17,7 @@ object Counter{
         return flow {
             while (isActive){
                 emit(counterValue)
+                counterValue++
                 delay(1500)
             }
         }
