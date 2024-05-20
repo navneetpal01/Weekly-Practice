@@ -1,14 +1,17 @@
 package com.example.weekly_practice
 
 import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
@@ -30,7 +33,7 @@ class MainActivity : ComponentActivity() {
     val permissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.RECORD_AUDIO
-        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
@@ -47,14 +50,13 @@ class MainActivity : ComponentActivity() {
 
                 val activityResultLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions()
-                ) {result ->
-                    permissions.forEach {permission ->
-                        if (result[permission] == false){
-                            if (!shouldShowRequestPermissionRationale(permission)){
+                ) { result ->
+                    permissions.forEach { permission ->
+                        if (result[permission] == false) {
+                            if (!shouldShowRequestPermissionRationale(permission)) {
                                 viewModel.updateLaunchToSettings(true)
-                            }else{
-                                viewModel.updateShowDialog(true)
                             }
+                            viewModel.updateShowDialog(true)
                         }
                     }
 
@@ -64,15 +66,45 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
+
+                    Button(
+                        onClick = {
+                            permissions.forEach { permission ->
+                                val isGranted =
+                                    checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+                                if (!isGranted) {
+                                    if (shouldShowRequestPermissionRationale(permission)) {
+                                        viewModel.updateShowDialog(true)
+                                    } else {
+                                        activityResultLauncher.launch(permissions)
+                                    }
+                                }
+
+                            }
+                        }
+                    ) {
+                        Text(text = "Request Permissions")
+                    }
 
                     if (showDialog) {
                         ShowPermissionDialog(
                             onButtonClick = {
-
+                                viewModel.updateShowDialog(false)
+                                if (launchToSettings){
+                                    Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package",packageName,"null")
+                                    ).also {
+                                        startActivity(it)
+                                    }
+                                    viewModel.updateLaunchToSettings(false)
+                                }else{
+                                    activityResultLauncher.launch(permissions)
+                                }
                             },
                             onDismiss = {
-
+                                viewModel.updateShowDialog(false)
                             }
                         )
                     }
