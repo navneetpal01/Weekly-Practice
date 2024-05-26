@@ -7,6 +7,11 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import com.example.weekly_practice.model.Bpi
+import com.example.weekly_practice.model.Currency
+import com.example.weekly_practice.model.CurrencyDetails
+import com.example.weekly_practice.presentation.CurrencyScreen
 import com.example.weekly_practice.ui.theme.WeeklyPracticeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,8 +30,11 @@ class MainActivity : ComponentActivity() {
         )
         super.onCreate(savedInstanceState)
         setContent {
+            val currency = viewModel.currencyData.collectAsState().value
             WeeklyPracticeTheme {
-
+                currency?.let {
+                    CurrencyScreen(bpi = it.bpi)
+                }
             }
         }
     }
