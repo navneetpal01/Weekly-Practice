@@ -1,6 +1,8 @@
 package com.example.weekly_practice.di
 
 import com.example.weekly_practice.data.remote.CurrencyApi
+import com.example.weekly_practice.data.repository.CurrencyRepositoryImpl
+import com.example.weekly_practice.domain.repository.CurrencyRepository
 import com.example.weekly_practice.model.Currency
 import com.example.weekly_practice.utils.Constants.BASE_URL
 import dagger.Module
@@ -38,6 +40,13 @@ object NetworkModule{
             .client(client)
             .build()
             .create(CurrencyApi::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun providesCurrencyRepository(currencyApi: CurrencyApi) : CurrencyRepository{
+        return CurrencyRepositoryImpl(currencyApi)
     }
 
 

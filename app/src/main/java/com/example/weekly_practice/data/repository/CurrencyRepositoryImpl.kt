@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
-class CurrencyRepositoryImpl @Inject constructor(
+class CurrencyRepositoryImpl(
     private val currencyApi: CurrencyApi
 ) : CurrencyRepository{
 
