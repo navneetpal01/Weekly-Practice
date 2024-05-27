@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
+    id("kotlin-kapt")
     alias(libs.plugins.daggerHiltAndroid)
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -70,14 +71,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    //Retrofit
-    implementation(libs.retrofit2)
-    implementation(libs.retrofit2.converter)
-    implementation(libs.okhttp3)
-    implementation(libs.okhttp3.logging.interceptor)
+    // Room
+    val roomVersion = "2.6.0"
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     //Dagger Hilt
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
+
+    //Navigation
+
+    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 }
