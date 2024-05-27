@@ -3,6 +3,7 @@ package com.example.weekly_practice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weekly_practice.data.local.ContactsDatabase
+import com.example.weekly_practice.presentation.ContactsEvent
 import com.example.weekly_practice.presentation.ContactsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,21 @@ class MainViewModel @Inject constructor(
             listContacts = contactsList
         )
 
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),ContactsState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ContactsState())
+
+
+    fun onEvent(event : ContactsEvent){
+
+        when(event){
+            is ContactsEvent.AddContact -> {
+
+            }
+            is ContactsEvent.DeleteContact -> {
+
+            }
+        }
+
+    }
 
 
 }
