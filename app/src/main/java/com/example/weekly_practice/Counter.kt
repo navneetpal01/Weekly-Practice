@@ -5,15 +5,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
-object Counter{
+object Counter {
 
-    var counterValue : Int = 0
-    var isRunning : Boolean = true
-
-
+    var counterValue: Int = 0
+    var isRunning: Boolean = true
 
 
-    suspend fun start() : Flow<Int>{
+    suspend fun start(): Flow<Int> {
         return flow {
             while (isRunning) {
                 counterValue++
@@ -24,18 +22,10 @@ object Counter{
     }
 
 
-    suspend fun stop(){
+    fun stop() {
         isRunning = false
         counterValue = 0
     }
-
-
-
-
-
-
-
-
 
 
 }

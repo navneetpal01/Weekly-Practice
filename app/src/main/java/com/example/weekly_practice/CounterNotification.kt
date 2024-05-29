@@ -17,8 +17,7 @@ class CounterNotification(
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
-    fun counterNotification() {
-
+    fun counterNotification(counterValue : Int) {
 
         val flag =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) PendingIntent.FLAG_IMMUTABLE else 0
@@ -34,12 +33,29 @@ class CounterNotification(
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Counter")
-            .setContentText(Counter.counterValue.toString())
+            .setContentText(counterValue.toString())
             .setStyle(NotificationCompat.BigPictureStyle())
             .setContentIntent(notificationClickPendingIntent)
             .addAction(
-
+                R.drawable.ic_launcher_foreground,
+                "Start",
+                getPendingIntentForAction(
+                    CounterReceiver.CounterAction.START,
+                    flag,
+                    2
+                )
             )
+            .addAction(
+                R.drawable.ic_launcher_foreground,
+                "Stop",
+                getPendingIntentForAction(
+                    CounterReceiver.CounterAction.STOP,
+                    flag,
+                    3
+                )
+            )
+            .build()
+        notificationManager.notify(7,notification)
     }
 
     fun getPendingIntentForAction(
@@ -50,12 +66,14 @@ class CounterNotification(
 
         val intent = Intent(context,CounterReceiver::class.java)
         when(action){
-            CounterReceiver.CounterAction.START ->
-            CounterReceiver.CounterAction.STOP ->
+            CounterReceiver.CounterAction.START -> intent.action = CounterReceiver.CounterAction.START.name
+            CounterReceiver.CounterAction.STOP -> intent.action = CounterReceiver.CounterAction.STOP.name
         }
         return PendingIntent.getBroadcast(
             context,
-
+            requestCode,
+            intent,
+            flag
         )
 
     }
