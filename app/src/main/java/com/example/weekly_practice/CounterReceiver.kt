@@ -6,7 +6,18 @@ import android.content.Intent
 
 
 class CounterReceiver : BroadcastReceiver(){
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent) {
+        when(intent.action){
+            CounterAction.START.name ->{}
+            CounterAction.STOP.name -> {}
+        }
+    }
+
+
+    fun start(){
+
+    }
+    fun stop(){
 
     }
 
@@ -15,11 +26,10 @@ class CounterReceiver : BroadcastReceiver(){
 
 
 
-
-
-    enum class CounterValues{
+    enum class CounterAction{
         START,
         STOP
     }
 
 }
+
