@@ -31,24 +31,31 @@ class CounterService(
     private fun start(){
         CoroutineScope(Dispatchers.IO).launch {
             Counter.start().collect{counterValue ->
-
-
+                notification(counterValue)
             }
         }
 
     }
 
 
-    private fun notification(){
+    private fun notification(counterValue : Int){
+
 
         val notification = NotificationCompat.Builder(context,CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .
+            .setContentTitle("Counter")
+            .setContentText(counterValue.toString())
             .build()
 
+        startForeground(1,notification)
 
 
+    }
 
+
+    private fun stop(){
+        Counter.stop()
+        stopSelf()
     }
 
 
