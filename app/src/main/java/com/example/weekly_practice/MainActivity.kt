@@ -1,8 +1,12 @@
 package com.example.weekly_practice
 
 import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,7 +31,7 @@ import com.example.weekly_practice.ui.WeeklyPracticeTheme
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
-    private val permissions = arrayOf(Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO)
+    private val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
@@ -43,22 +47,60 @@ class MainActivity : ComponentActivity() {
 
                 val permissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions()
-                ) {
-
+                ) { result ->
+                    permissions.forEach { permission ->
+                        if (result[permission] == false) {
+                            if (!shouldShowRequestPermissionRationale(permission)) {
+                                viewModel.updateLaunchToSettings(true)
+                            }
+                            viewModel.updateShowDialog(true)
+                        }
+                    }
                 }
-                
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
-                ){
+                ) {
                     Button(
-                        onClick = { 
-                            permissionLauncher.launch(permissions)
+                        onClick = {
+                            permissions.forEach { permission ->
+                                val isGranted =
+                                    checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+                                if (!isGranted) {
+                                    if (shouldShowRequestPermissionRationale(permission)) {
+                                        viewModel.updateShowDialog(true)
+                                    } else {
+                                        permissionLauncher.launch(permissions)
+                                    }
+                                }
+                            }
                         }
                     ) {
                         Text(text = "Start")
+                    }
+                    if (showDialog) {
+                        ShowPermissionDialog(
+                            onDismiss = {
+                                viewModel.updateShowDialog(false)
+                            },
+                            onConfirm = {
+                                viewModel.updateShowDialog(false)
+                                if (launchToSettings) {
+                                    Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package",packageName,null)
+                                    ).also {
+                                        startActivity(it)
+                                        viewModel.updateLaunchToSettings(false)
+                                    }
+                                }else{
+                                    permissionLauncher.launch(permissions)
+                                }
+                            }
+                        )
                     }
                 }
 
