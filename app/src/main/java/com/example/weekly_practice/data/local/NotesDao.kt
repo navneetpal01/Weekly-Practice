@@ -16,7 +16,7 @@ interface NotesDao{
 
 
     @Query("SELECT * FROM NOTE")
-    suspend fun getNotes() : Flow<List<Note>>
+     fun getNotes() : Flow<List<Note>>
 
 
 
