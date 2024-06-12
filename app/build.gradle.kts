@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
-    alias(libs.plugins.daggerHiltAndroid)
+
 }
 
 android {
@@ -69,24 +68,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Retrofit
-    implementation(libs.retrofit2)
-    implementation(libs.retrofit2.converter)
-    implementation(libs.okhttp3)
-    implementation(libs.okhttp3.logging.interceptor)
-
-    //Dagger Hilt
-    implementation(libs.dagger.hilt)
-    kapt(libs.dagger.hilt.compiler)
-
-
-    // Room
-    val roomVersion = "2.6.0"
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-
-    // Navigation
-    implementation ("androidx.navigation:navigation-compose:2.7.5")
 
 
 
