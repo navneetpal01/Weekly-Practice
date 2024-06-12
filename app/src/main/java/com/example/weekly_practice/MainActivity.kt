@@ -6,9 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.rememberNavController
-import com.example.weekly_practice.presentation.nvgarph.NavGraph
-import com.example.weekly_practice.presentation.nvgarph.Route
 import com.example.weekly_practice.ui.WeeklyPracticeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,11 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WeeklyPracticeTheme {
-                val navController = rememberNavController()
-                NavGraph(
-                    navController = navController,
-                    startDestination = Route.NotesScreen.screenName
-                )
+
             }
         }
     }
