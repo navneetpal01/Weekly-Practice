@@ -11,7 +11,9 @@ class DataSyncRepositoryImpl(
 ): DataSyncRepository{
     override suspend fun syncData() {
         delay(1500)
-        Log.d("pokemon", "Data Synced Successfully")
+        Log.d("pokemon", "Data Synced Failed")
+        throw Exception("Failed")
+        Log.d("pokemon", "Data Synced Successful")
     }
 
 }
