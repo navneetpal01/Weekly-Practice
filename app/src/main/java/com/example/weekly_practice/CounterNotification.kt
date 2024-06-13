@@ -35,7 +35,49 @@ class CounterNotification(val context: Context) {
             .setContentText(counterValue.toString())
             .setContentIntent(pendingIntent)
             .setStyle(NotificationCompat.BigPictureStyle())
+            .addAction(
+                R.drawable.ic_launcher_foreground,
+                "START",
+                addPendingIntent(
+                    context,
+                    flag,
+                    2,
+                    CounterActions.START
+                )
+            )
+            .addAction(
+                R.drawable.ic_launcher_foreground,
+                "STOP",
+                addPendingIntent(
+                    context,
+                    flag,
+                    3,
+                    CounterActions.STOP
+                )
+            )
+            .build()
 
+        notificationManager.notify(1,notification)
+
+    }
+
+    private fun addPendingIntent(
+        context : Context,
+        flag : Int,
+        requestCode : Int,
+        counterActions: CounterActions
+    ) : PendingIntent{
+        val intent = Intent(context,CounterReceiver::class.java)
+        when(counterActions){
+            CounterActions.START -> intent.action = CounterActions.START.name
+            CounterActions.STOP -> intent.action = CounterActions.STOP.name
+        }
+        return PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            flag
+        )
     }
 
 

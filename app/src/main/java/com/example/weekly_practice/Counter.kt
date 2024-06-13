@@ -1,5 +1,6 @@
 package com.example.weekly_practice
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -15,14 +16,15 @@ object Counter {
             isRunning = true
             while (isRunning){
                 emit(counterValue)
+                delay(1000)
                 counterValue ++
             }
         }
     }
 
     fun stopCounter(){
-        isRunning = false
         counterValue = 0
+        isRunning = false
     }
 
 
