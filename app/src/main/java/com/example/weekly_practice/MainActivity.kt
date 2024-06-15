@@ -2,8 +2,11 @@ package com.example.weekly_practice
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -23,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontVariation
 import com.example.weekly_practice.ui.WeeklyPracticeTheme
 
 
@@ -49,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 ) { permission ->
                     permissions.forEach {
                         if (permission[it] == false) {
-                            if (!shouldShowRequestPermissionRationale(it)){
+                            if (!shouldShowRequestPermissionRationale(it)) {
                                 viewModel.updateLaunchToSettings(true)
                             }
                             viewModel.updateShowDialog(true)
@@ -64,7 +68,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Button(
                         onClick = {
-                            launcher.launch(permissions)
+                            permissions.forEach { permission ->
+                                val granted =
+                                    checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+                                if (!granted) {
+                                    if (shouldShowRequestPermissionRationale(permission)) {
+                                        viewModel.updateShowDialog(true)
+                                    } else {
+                                        launcher.launch(permissions)
+                                    }
+                                }
+
+                            }
                         }
                     ) {
                         Text(text = "Start Call")
@@ -73,11 +88,17 @@ class MainActivity : ComponentActivity() {
                 if (showDialog) {
                     PermissionDialog(
                         onClick = {
-                            permissions.forEach { permission ->
-                                if (shouldShowRequestPermissionRationale(permission)) {
-                                    Intent()
+                            viewModel.updateShowDialog(false)
+                            if (launchToSettings) {
+                                Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                ).also {
+                                    startActivity(it)
                                 }
-
+                                viewModel.updateLaunchToSettings(false)
+                            } else {
+                                launcher.launch(permissions)
                             }
                         },
                         onDismiss = {
@@ -100,7 +121,11 @@ private fun PermissionDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            onClick()
+            Button(
+                onClick = onClick
+            ) {
+                Text(text = "Ok")
+            }
         },
         modifier = Modifier
             .fillMaxWidth(),
