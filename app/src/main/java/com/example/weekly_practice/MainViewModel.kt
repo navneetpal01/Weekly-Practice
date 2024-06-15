@@ -3,21 +3,25 @@ package com.example.weekly_practice
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 
-class MainViewModel : ViewModel(){
+class MainViewModel : ViewModel() {
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog = _showDialog.asStateFlow()
 
     private val _launchToSettings = MutableStateFlow(false)
-    val launchToSettings =
+    val launchToSettings = _launchToSettings.asStateFlow()
 
 
+    fun updateShowDialog(value: Boolean) {
+        _showDialog.update { value }
+    }
 
-
-
-
+    fun updateLaunchToSettings(value: Boolean) {
+        _launchToSettings.update { value }
+    }
 
 
 }
